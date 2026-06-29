@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Диалог — вход в мессенджер</title>
+
+    <meta name="description" content="Страница входа в учебный веб-мессенджер Диалог с аккуратной формой авторизации.">
+    <meta name="keywords" content="Диалог вход, мессенджер, авторизация, Tailwind CSS">
+    <meta name="author" content="Бездняков Александр">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2563EB">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="Диалог">
+    <meta property="og:title" content="Диалог — вход в мессенджер">
+    <meta property="og:description" content="Страница входа в учебный веб-мессенджер Диалог с аккуратной формой авторизации.">
+    <meta property="og:image" content="assets/favicon/favicon-96x96.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Диалог — вход в мессенджер">
+    <meta name="twitter:description" content="Страница входа в учебный веб-мессенджер Диалог с аккуратной формой авторизации.">
+
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=042">
+
+    <script src="js/api.js" defer></script>
+    <script src="js/auth.js" defer></script>
+  </head>
+
+  <body class="page-appear min-h-screen bg-[#f3f4f6] font-sans text-[#111827]">
+    <main class="auth-page relative mx-auto h-[900px] w-[1440px] bg-[#f3f4f6]">
+      <header class="auth-header absolute left-[80px] top-[27px] h-[72px] w-[1280px] rounded-[26px] bg-white shadow-[0_14px_36px_rgba(17,24,39,0.07)]">
+        <a href="login.html" class="auth-logo brand-block logo-link absolute left-[28px] top-[10px]" aria-label="Диалог">
+          <img src="assets/logo.svg" alt="Диалог" class="brand-logo">
+          <span class="brand-name">Диалог</span>
+        </a>
+
+        <a href="register.html" class="btn-ghost header-btn-ghost absolute left-[962px] top-[14px] flex h-[43px] w-[169px] items-center justify-center rounded-[12px] border border-[#d1d5db] bg-white text-[14px] font-semibold leading-[16px] text-[#111827]">
+          Регистрация
+        </a>
+
+        <a href="login.html" class="btn-primary header-btn-primary absolute left-[1145px] top-[14px] flex h-[43px] w-[116px] items-center justify-center rounded-[12px] bg-[#2563eb] text-[14px] font-semibold leading-[14px] text-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
+          Войти
+        </a>
+      </header>
+
+      <section class="auth-card absolute left-[510px] top-[145px] h-[610px] w-[420px] rounded-[26px] bg-white shadow-[0_28px_80px_rgba(17,24,39,0.12)]">
+        <div class="absolute left-[164px] top-[47px]">
+          <div class="flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-[999px] bg-[#eff6ff] text-[12px] font-semibold leading-[15px] text-[#2563eb]">
+            АБ
+          </div>
+        </div>
+
+        <h1 class="absolute left-0 top-[133px] w-[420px] text-center text-[28px] font-bold leading-[34px] text-[#111827]">
+          Вход в Диалог
+        </h1>
+
+        <p class="absolute left-[42px] top-[173px] w-[336px] text-center text-[14px] font-normal leading-[17px] text-[#6b7280]">
+          Введите email и пароль, чтобы продолжить общение.
+        </p>
+
+        <form class="auth-form absolute left-[48px] top-[243px] w-[324px]" data-auth-form="login">
+          <label class="block text-[13px] font-medium leading-[16px] text-[#111827]">
+            Email
+          </label>
+
+          <input class="mt-[8px] h-[46px] w-[324px] rounded-[12px] border border-[#e5e7eb] bg-white px-[14px] text-[14px] font-normal leading-[17px] text-[#111827] outline-none placeholder:text-[#9ca3af]" type="email" name="email" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="190" required placeholder="Введите email">
+
+          <label class="mt-[24px] block text-[13px] font-medium leading-[16px] text-[#111827]">
+            Пароль
+          </label>
+
+          <div class="relative mt-[8px] h-[46px] w-[324px]">
+            <input class="h-[46px] w-[324px] rounded-[12px] border border-[#e5e7eb] bg-white px-[14px] pr-[88px] text-[14px] font-normal leading-[17px] text-[#111827] outline-none placeholder:text-[#9ca3af]" type="password" name="password" autocomplete="current-password" data-lpignore="true" data-1p-ignore="true" minlength="6" maxlength="255" required placeholder="Введите пароль">
+
+            <button class="password-toggle absolute right-[12px] top-[14px] text-[12px] font-medium leading-[15px] text-[#2563eb]" type="button">
+              Показать
+            </button>
+          </div>
+
+          <div class="auth-form-message hidden" data-form-error aria-live="polite"></div>
+
+          <button class="btn-primary mt-[14px] h-[48px] w-[324px] rounded-[12px] bg-[#2563eb] text-center text-[14px] font-semibold leading-[17px] text-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]" type="submit">
+            Войти
+          </button>
+
+          <div class="auth-switch mt-[22px] text-center text-[14px] font-normal leading-[17px] text-[#6b7280]">
+            Нет аккаунта?
+            <a class="auth-switch-link font-medium text-[#2563eb]" href="register.html">Зарегистрироваться</a>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

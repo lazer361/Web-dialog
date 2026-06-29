@@ -1,0 +1,13 @@
+{
+  "name": "student/webdialog",
+  "description": "Student practice web messenger backend",
+  "type": "project",
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}

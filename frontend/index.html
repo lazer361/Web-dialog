@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Диалог — веб-мессенджер</title>
+
+    <meta name="description" content="Учебный веб-мессенджер Диалог для производственной практики: список пользователей, чат, отправка сообщений и адаптивный интерфейс.">
+    <meta name="keywords" content="Диалог, веб мессенджер, чат, Tailwind CSS, производственная практика">
+    <meta name="author" content="Бездняков Александр">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2563EB">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="Диалог">
+    <meta property="og:title" content="Диалог — веб-мессенджер">
+    <meta property="og:description" content="Учебный веб-мессенджер Диалог для производственной практики: список пользователей, чат, отправка сообщений и адаптивный интерфейс.">
+    <meta property="og:image" content="assets/favicon/favicon-96x96.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Диалог — веб-мессенджер">
+    <meta name="twitter:description" content="Учебный веб-мессенджер Диалог для производственной практики: список пользователей, чат, отправка сообщений и адаптивный интерфейс.">
+
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=042">
+
+    <script>
+      (function() {
+        try {
+          if (!localStorage.getItem('webdialog_token')) {
+            window.location.replace('login.html');
+          }
+        } catch (error) {
+          window.location.replace('login.html');
+        }
+      })();
+    </script>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/ws.js" defer></script>
+    <script src="js/chat.js" defer></script>
+  </head>
+
+  <body class="page-appear min-h-screen bg-[#f3f4f6] font-sans text-[#111827]" data-page="chat" data-auth-state="checking">
+    <main class="app-page">
+      <section class="app-card">
+        <header class="app-topbar desktop-topbar">
+          <a href="index.html" class="brand-block logo-link" aria-label="Диалог">
+            <img src="assets/logo.svg" alt="Диалог" class="brand-logo">
+            <span class="brand-name">Диалог</span>
+          </a>
+
+          <div class="connection-chip" data-connection-status>
+            <span></span>
+            Онлайн
+          </div>
+
+          <div class="current-user">
+            <div class="avatar avatar-blue" data-current-user-avatar>?</div>
+
+            <div>
+              <div class="current-user-name" data-current-user-name>Пользователь</div>
+              <a href="login.html" class="logout-link" data-logout>Выйти</a>
+            </div>
+          </div>
+        </header>
+
+        <header class="mobile-chat-topbar">
+          <a href="#" class="back-link" aria-label="Назад к списку пользователей" data-mobile-back>‹</a>
+
+          <div class="mobile-chat-person">
+            <div class="avatar avatar-green" data-mobile-chat-avatar>?</div>
+
+            <div>
+              <div class="mobile-chat-name" data-mobile-chat-name>Диалог</div>
+              <div class="user-status" data-mobile-chat-subtitle>Выберите собеседника</div>
+            </div>
+          </div>
+        </header>
+
+        <div class="app-layout">
+          <aside class="contacts-sidebar">
+            <h1>Пользователи</h1>
+
+            <input class="search-input" placeholder="Поиск пользователя" data-user-search aria-label="Поиск пользователя">
+
+            <div class="contacts-list" data-users-list></div>
+          </aside>
+
+          <section class="chat-panel">
+            <div class="chat-header">
+              <div class="avatar avatar-green" data-chat-avatar>?</div>
+
+              <div>
+                <div class="chat-name" data-chat-name>Диалог</div>
+                <div class="user-status" data-chat-subtitle>Выберите собеседника</div>
+              </div>
+            </div>
+
+            <div id="desktopMessages" class="chat-messages">
+              <div class="message-stack" data-message-stack></div>
+            </div>
+
+            <form class="send-form composer" data-target="desktopMessages" data-chat-form>
+              <input name="message" maxlength="1000" autocomplete="off" placeholder="Введите сообщение...">
+
+              <button class="btn-primary send-button composer-send-text" type="submit">
+                Отправить
+              </button>
+
+              <button class="btn-primary send-icon-button composer-send-icon" type="submit" aria-label="Отправить">
+                <svg width="17" height="13" viewBox="0 0 17 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.12999e-05 12.888L4.48203 6.44399L3.12999e-05 -6.79493e-06L16.218 6.44399L3.12999e-05 12.888Z" fill="white" />
+                </svg>
+              </button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

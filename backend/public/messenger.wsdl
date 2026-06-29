@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://localhost/webdialog/messenger"
+             targetNamespace="http://localhost/webdialog/messenger"
+             name="MessengerService">
+  <types>
+    <xsd:schema targetNamespace="http://localhost/webdialog/messenger" elementFormDefault="qualified">
+      <xsd:complexType name="User">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="email" type="xsd:string"/>
+          <xsd:element name="created_at" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:element name="sender_id" type="xsd:int"/>
+          <xsd:element name="receiver_id" type="xsd:int"/>
+          <xsd:element name="text" type="xsd:string"/>
+          <xsd:element name="created_at" type="xsd:string"/>
+          <xsd:element name="is_read" type="xsd:boolean"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UserList">
+        <xsd:sequence>
+          <xsd:element name="item" type="tns:User" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MessageList">
+        <xsd:sequence>
+          <xsd:element name="item" type="tns:Message" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegisterResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+          <xsd:element name="user" type="tns:User" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="LoginResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+          <xsd:element name="token" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="expires_at" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="user" type="tns:User" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BaseResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CurrentUserResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+          <xsd:element name="user" type="tns:User" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UsersResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+          <xsd:element name="users" type="tns:UserList" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MessagesResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string"/>
+          <xsd:element name="messages" type="tns:MessageList" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+
+  <message name="RegisterRequest">
+    <part name="name" type="xsd:string"/>
+    <part name="email" type="xsd:string"/>
+    <part name="password" type="xsd:string"/>
+  </message>
+  <message name="RegisterResponse">
+    <part name="return" type="tns:RegisterResponse"/>
+  </message>
+
+  <message name="LoginRequest">
+    <part name="email" type="xsd:string"/>
+    <part name="password" type="xsd:string"/>
+  </message>
+  <message name="LoginResponse">
+    <part name="return" type="tns:LoginResponse"/>
+  </message>
+
+  <message name="LogoutRequest">
+    <part name="token" type="xsd:string"/>
+  </message>
+  <message name="LogoutResponse">
+    <part name="return" type="tns:BaseResponse"/>
+  </message>
+
+  <message name="GetCurrentUserRequest">
+    <part name="token" type="xsd:string"/>
+  </message>
+  <message name="GetCurrentUserResponse">
+    <part name="return" type="tns:CurrentUserResponse"/>
+  </message>
+
+  <message name="GetUsersRequest">
+    <part name="token" type="xsd:string"/>
+  </message>
+  <message name="GetUsersResponse">
+    <part name="return" type="tns:UsersResponse"/>
+  </message>
+
+  <message name="GetMessagesRequest">
+    <part name="token" type="xsd:string"/>
+    <part name="otherUserId" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="GetMessagesResponse">
+    <part name="return" type="tns:MessagesResponse"/>
+  </message>
+
+  <portType name="MessengerPortType">
+    <operation name="Register">
+      <input message="tns:RegisterRequest"/>
+      <output message="tns:RegisterResponse"/>
+    </operation>
+    <operation name="Login">
+      <input message="tns:LoginRequest"/>
+      <output message="tns:LoginResponse"/>
+    </operation>
+    <operation name="Logout">
+      <input message="tns:LogoutRequest"/>
+      <output message="tns:LogoutResponse"/>
+    </operation>
+    <operation name="GetCurrentUser">
+      <input message="tns:GetCurrentUserRequest"/>
+      <output message="tns:GetCurrentUserResponse"/>
+    </operation>
+    <operation name="GetUsers">
+      <input message="tns:GetUsersRequest"/>
+      <output message="tns:GetUsersResponse"/>
+    </operation>
+    <operation name="GetMessages">
+      <input message="tns:GetMessagesRequest"/>
+      <output message="tns:GetMessagesResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="MessengerBinding" type="tns:MessengerPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="Register">
+      <soap:operation soapAction="Register"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+    <operation name="Login">
+      <soap:operation soapAction="Login"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+    <operation name="Logout">
+      <soap:operation soapAction="Logout"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+    <operation name="GetCurrentUser">
+      <soap:operation soapAction="GetCurrentUser"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+    <operation name="GetUsers">
+      <soap:operation soapAction="GetUsers"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+    <operation name="GetMessages">
+      <soap:operation soapAction="GetMessages"/>
+      <input><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></input>
+      <output><soap:body use="literal" namespace="http://localhost/webdialog/messenger"/></output>
+    </operation>
+  </binding>
+
+  <service name="MessengerService">
+    <port name="MessengerPort" binding="tns:MessengerBinding">
+      <soap:address location="http://127.0.0.1:8000/api/soap.php"/>
+    </port>
+  </service>
+</definitions>

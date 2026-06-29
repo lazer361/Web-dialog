@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MYSQL_DATABASE: ${WEBDIALOG_DB_NAME:-webdialog}
+      MYSQL_USER: ${WEBDIALOG_DB_USER:-webdialog_user}
+      MYSQL_PASSWORD: ${WEBDIALOG_DB_PASSWORD:-webdialog_pass}
+      MYSQL_ROOT_PASSWORD: ${WEBDIALOG_DB_ROOT_PASSWORD:-root_pass}
+    volumes:
+      - webdialog_db_data:/var/lib/mysql
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  php:
+    build:
+      context: ./docker/php
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${WEBDIALOG_DB_NAME:-webdialog}
+      DB_USER: ${WEBDIALOG_DB_USER:-webdialog_user}
+      DB_PASSWORD: ${WEBDIALOG_DB_PASSWORD:-webdialog_pass}
+    volumes:
+      - ./backend:/var/www/backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  websocket:
+    build:
+      context: ./docker/php
+    command: php /var/www/backend/websocket/server.php
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${WEBDIALOG_DB_NAME:-webdialog}
+      DB_USER: ${WEBDIALOG_DB_USER:-webdialog_user}
+      DB_PASSWORD: ${WEBDIALOG_DB_PASSWORD:-webdialog_pass}
+      WS_HOST: 0.0.0.0
+      WS_PORT: 8080
+    volumes:
+      - ./backend:/var/www/backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "127.0.0.1:8000:80"
+    volumes:
+      - ./frontend:/var/www/frontend:ro
+      - ./backend/public:/var/www/backend/public:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+      - websocket
+
+volumes:
+  webdialog_db_data:
